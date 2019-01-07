@@ -1,0 +1,19 @@
+{
+  "name": "playerxtwo",
+  "version": "1.0.0",
+  "description": "aasdasd",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/xtcry/PlayerXTwo.git"
+  },
+  "author": "xTCry (Vladislav)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xtcry/PlayerXTwo/issues"
+  },
+  "homepage": "https://github.com/xtcry/PlayerXTwo#readme"
+}
