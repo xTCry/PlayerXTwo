@@ -1,4 +1,4 @@
-# PlayerXTow (Node `mpg123` player)
+# PlayerXTwo (Node `mpg123` player)
 
 ![npm](https://img.shields.io/npm/v/playerxtwo.svg?style=flat-square)
 ![npm](https://img.shields.io/npm/dt/playerxtwo.svg?style=flat-square)
