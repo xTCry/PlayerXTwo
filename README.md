@@ -11,7 +11,7 @@ sudo apt install mpg123
 
 ### Install PlayerXTwo to Node
 ```shell
-npm i vcoinws
+npm i playerxtwo
 ```
 
 ## Usage
