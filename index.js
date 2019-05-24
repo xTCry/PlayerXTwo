@@ -223,8 +223,9 @@ class PlayerXTwo extends EventEmitter {
 		} catch(e) {
 			console.error("[PlayerX] Error [_cmd] (stream.write): ", e);
 			
-			if(e.message.includes("This socket is closed")) {
+			if([ "Cannot call write after a stream was destroyed", "This socket is closed" ].includes(e.message)) {
 				if(this.saveOptions) {
+					console.log("PlayerX try reCreate");
 					this.close();
 					this.create(this.saveOptions);
 				}
@@ -258,7 +259,7 @@ class PlayerXTwo extends EventEmitter {
 			throw new TypeError("Incorrect value for files: " + files);
 		}
 		
-		if (typeof files === 'string' || (typeof files === 'object') ) {
+		if (typeof files === 'string' || (typeof files === 'object' && !util.isArray(files)) ) {
 			files = [files];
 	    }
 		
@@ -321,7 +322,7 @@ class PlayerXTwo extends EventEmitter {
 
 			this.currentPlaylist.push(ga);
 		});
-
+		
 		return this.currentPlaylist;
 		// return ret;
 	}
