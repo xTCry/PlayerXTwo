@@ -223,6 +223,8 @@ class PlayerXTwo extends EventEmitter {
 		} catch(e) {
 			console.error("[PlayerX] Error [_cmd] (stream.write): ", e);
 			
+			this.emit('error', e);
+
 			if([ "Cannot call write after a stream was destroyed", "This socket is closed" ].includes(e.message)) {
 				if(this.saveOptions) {
 					console.log("PlayerX try reCreate");
@@ -263,7 +265,7 @@ class PlayerXTwo extends EventEmitter {
 			files = [files];
 	    }
 		
-		var play_files = this.resolveFilePaths(files, settings.url);
+		var play_files = this.resolveFilePaths(files/*, settings.url*/);
 		this.respawnCB = null;
 		
 		// console.log("play_files", play_files);
@@ -300,31 +302,29 @@ class PlayerXTwo extends EventEmitter {
 		return true;
 	}
 
-	resolveFilePaths(plist, isUrl) {
+	// ftw remake (24.11.2019)
+	resolveFilePaths(plist/*, _isUrl*/) {
 		this.currentPlaylist = [];
-		var ret = [];
 
-		plist.forEach((audio)=> {
-			if(!isUrl) {
-				var realPath = path.resolve(this.fileDir, audio);
-				if (!fs.existsSync(realPath)) {
-					this.emit('error', new Error('File does not exist: ' + realPath));
-					return;
+		for(const audio of plist) {
+			let audioPath = audio.path || audio.url || audio;
+			const isLocal = !(/(http(s)?:\/\/.)/i).test(audioPath);
+
+			if(!isLocal) {
+				audioPath = path.resolve(this.fileDir, audioPath);
+				if (!fs.existsSync(audioPath)) {
+					this.emit('error', new Error('File does not exist: ' + audioPath));
+					continue;
 				}
 			}
+			
+			this.currentPlaylist.push({
+				url: audioPath,
+				name: (audio.name || audio.url || 'TrackName')
+			});
+		}
 
-			let url = isUrl? (audio.url? audio.url: audio): realPath;
-			let id = ret.push(url);
-			let ga = { id, url };
-
-			if(isUrl && audio.name)
-				ga = { ...ga, name: audio.name };
-
-			this.currentPlaylist.push(ga);
-		});
-		
 		return this.currentPlaylist;
-		// return ret;
 	}
 
 	load(audio) {
