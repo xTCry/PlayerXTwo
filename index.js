@@ -310,7 +310,7 @@ class PlayerXTwo extends EventEmitter {
 			let audioPath = audio.path || audio.url || audio;
 			const isLocal = !(/(http(s)?:\/\/.)/i).test(audioPath);
 
-			if(!isLocal) {
+			if(isLocal) {
 				audioPath = path.resolve(this.fileDir, audioPath);
 				if (!fs.existsSync(audioPath)) {
 					this.emit('error', new Error('File does not exist: ' + audioPath));
